@@ -1,0 +1,43 @@
+<html>
+<head>
+    <style>
+        body {font-family: Magneto, sans-serif; margin: 20px;}
+        td {padding: 5px;}
+        .Bullish {background: green; color: white;}
+        .Bearish {background: red; color: white;}
+    </style>
+</head>
+<body>
+    <h1>Stock Screener</h1>
+    <form>
+        <select name="pattern">
+            <option value="">Select a Pattern</option>
+           {%  for value in patterns %}
+                <option value="{{ value }}" {% if pattern == value %}selected="selected"{% endif %}>{{value}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Scan"/>
+    </form>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Company Namne</th>
+            <th>Signal</th>
+        </tr>
+        {% for stock in stocks %}
+            {% if stocks[stock][pattern] %}
+            <tr>
+                <td>{{stock}}</td>
+                <td>{{stocks[stock]['company']}}</td>
+                <td class="{{stocks[stock][pattern]}}">{{stocks[stock][pattern]}}</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <img src="https://finviz.com/chart.ashx?t={{ stock }}&ty=c&ta=1&p=d&s=l" />
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</body>
+</html>
